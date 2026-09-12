@@ -112,14 +112,20 @@ app.use(errorMiddleware)
 
 const bootstrap = async () => {
     try {
-        const PORT = process.env.PORT || 4000
-        await mongoose.connect(process.env.MONGO_URI)
-        console.log('MongoDB connected')
+        if (process.env.MONGO_URI && mongoose.connection.readyState === 0) {
+            await mongoose.connect(process.env.MONGO_URI)
+            console.log('MongoDB connected')
+        }
         
-        server.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
+        if (process.env.NODE_ENV !== 'production') {
+            const PORT = process.env.PORT || 4000
+            server.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
+        }
     } catch (error) {
         console.error(error)
     }
 }
 
 bootstrap()
+
+module.exports = app
