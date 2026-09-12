@@ -1,6 +1,7 @@
 const authController = require('../controllers/auth.controller')
 const userController = require('../controllers/user.controller')
 const authMiddleware = require('../middlewares/auth.middleware')
+const path = require('path');
 
 const router = require('express').Router()
 
@@ -12,6 +13,10 @@ router.group('/auth', route => {
 })
 
 router.group('/user', route => {
+	app.get('/', (req, res) => {
+		res.sendFile(path.join(__dirname, 'public', 'index.html'));
+	});
+	
 	route.get('/contacts', authMiddleware, userController.getContacts)
 	route.get('/messages/:contactId', authMiddleware, userController.getMessages)
 
