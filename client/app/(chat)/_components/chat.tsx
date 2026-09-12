@@ -16,7 +16,6 @@ import { useLoading } from '@/hooks/use-loading'
 import { IMessage } from '@/types'
 import { useCurrentContact } from '@/hooks/use-current'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { UploadDropzone } from '@/lib/uploadthing'
 import { useSession } from 'next-auth/react'
 
 interface Props {
