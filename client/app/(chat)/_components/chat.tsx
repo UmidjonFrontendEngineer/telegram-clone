@@ -105,14 +105,37 @@ const Chat: FC<Props> = ({ onSubmitMessage, messageForm, messages, onReadMessage
 							<DialogHeader>
 								<DialogTitle />
 							</DialogHeader>
-							<UploadDropzone
-								endpoint={'imageUploader'}
-								onClientUploadComplete={res => {
-									onSubmitMessage({ text: '', image: res[0].url })
-									setOpen(false)
-								}}
-								config={{ appendOnPaste: true, mode: 'auto' }}
-							/>
+							
+							<label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-lg cursor-pointer border-muted-foreground/20 hover:border-muted-foreground/40 bg-muted/50 transition">
+								<div className="flex flex-col items-center justify-center pt-5 pb-6 text-center px-4">
+									<svg className="w-10 h-10 mb-3 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+									</svg>
+									<p className="text-sm text-muted-foreground mb-1">
+										Choose a file or drag and drop
+									</p>
+									<p className="text-xs text-muted-foreground/70">
+										Image (4MB)
+									</p>
+								</div>
+								<input
+									type="file"
+									accept="image/*"
+									className="hidden"
+									onChange={(e) => {
+										const file = e.target.files?.[0]
+										if (!file) return
+
+										const reader = new FileReader()
+										reader.onloadend = () => {
+											const base64String = reader.result as string
+											onSubmitMessage({ text: '', image: base64String })
+											setOpen(false)
+										}
+										reader.readAsDataURL(file)
+									}}
+								/>
+							</label>
 						</DialogContent>
 					</Dialog>
 

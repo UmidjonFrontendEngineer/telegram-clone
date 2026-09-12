@@ -121,16 +121,27 @@ const Settings = () => {
 								{session?.currentUser?.email.charAt(0)}
 							</AvatarFallback>
 						</Avatar>
-						<UploadButton
-							endpoint='imageUploader'
-							onClientUploadComplete={res => {
-								mutate({ avatar: res[0].url })
-							}}
-							config={{ appendOnPaste: true, mode: 'auto' }}
-							className='absolute right-0 bottom-0'
-							appearance={{ allowedContent: { display: 'none' }, button: { width: 40, height: 40, borderRadius: '100%' } }}
-							content={{ button: <Upload size={16} /> }}
-						/>
+						<div className="absolute right-0 bottom-0 w-[40px] h-[40px] rounded-full bg-primary flex items-center justify-center cursor-pointer overflow-hidden shadow">
+							<label className="w-full h-full flex items-center justify-center cursor-pointer text-primary-foreground hover:opacity-90 transition">
+								<Upload size={16} />
+								<input
+									type="file"
+									accept="image/*"
+									className="hidden"
+									onChange={(e) => {
+										const file = e.target.files?.[0]
+										if (!file) return
+
+										const reader = new FileReader()
+										reader.onloadend = () => {
+											const base64String = reader.result as string
+											mutate({ avatar: base64String })
+										}
+										reader.readAsDataURL(file)
+									}}
+								/>
+							</label>
+						</div>
 					</div>
 
 					<Accordion type='single' collapsible className='mt-4'>
