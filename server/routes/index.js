@@ -13,7 +13,7 @@ router.group('/auth', route => {
 })
 
 router.group('/user', route => {
-	app.get('/', (req, res) => {
+	route.get('/', (req, res) => {
 		res.sendFile(path.join(__dirname, 'public', 'index.html'));
 	});
 	
