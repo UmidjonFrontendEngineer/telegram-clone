@@ -23,9 +23,15 @@ export const authOptions: NextAuthOptions = {
 			},
 		}),
 		GithubProvider({
-			clientId: process.env.GITHUB_CLIENT_ID!,
-			clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-		}),
+            clientId: process.env.GITHUB_CLIENT_ID!,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+            issuer: 'https://github.com/login/oauth',
+            authorization: {
+                params: {
+                    scope: 'read:user user:email',
+                },
+            },
+        }),
 		GoogleProvider({
 			clientId: process.env.GOOGLE_CLIENT_ID!,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
