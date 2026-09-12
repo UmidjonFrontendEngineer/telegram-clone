@@ -5,10 +5,12 @@ const io = require('socket.io')(5000, {
 let users = [] // {user, socketId}
 
 const addOnlineUser = (user, socketId) => {
-	const checkUser = users.find(u => u.user._id === user._id)
-	if (!checkUser) {
-		users.push({ user, socketId })
-	}
+    const checkUser = users.find(u => u.user._id === user._id)
+    if (!checkUser) {
+        users.push({ user, socketId })
+    } else {
+        checkUser.socketId = socketId
+    }
 }
 
 const getSocketId = userId => {
